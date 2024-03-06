@@ -1,12 +1,14 @@
 import Header from '@/components/shared/Header'
-import Sidebar from '@/components/shared/Sidebar'
-import Trends from '@/components/shared/Trends'
-import React from 'react'
-import { Outlet } from 'react-router-dom'
+import { useState } from 'react';
+import { Navigate, Outlet } from 'react-router-dom'
 
 function RootLayout() {
+  const [isLoggedIn, setLoggedIn] = useState(JSON.parse(localStorage.getItem('isLoggedIn')).isLogged);
+
   return (
-    <div className="w-full">
+    <>
+    {isLoggedIn ? (
+      <div className="w-full">
       
       <Header/>
       <section>
@@ -14,7 +16,12 @@ function RootLayout() {
       </section>
 
     </div>
+    ):(
+      <Navigate to="/"/>
+    )}
+  </>
   )
 }
 
 export default RootLayout
+

@@ -1,12 +1,13 @@
+import { useState } from "react";
 import { Outlet, Navigate } from "react-router-dom"
 
 function AuthLayout() {
-  const isAuthenticated = false;
+  const [isLoggedIn, setLoggedIn] = useState(JSON.parse(localStorage.getItem('isLoggedIn')).isLogged);
 
   return (
     <>
-      {isAuthenticated ? (
-        <Navigate to="/"/>
+      {isLoggedIn ? (
+        <Navigate to="/Home"/>
       ):(
         <>
           <section className="flex flex-1 justify-center items-center flex-col py-10">

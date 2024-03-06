@@ -9,6 +9,9 @@ import { SignUpValidation } from "@/lib/validations";
 import Loader from "@/components/shared/Loader";
 import { Link } from "react-router-dom";
 import { createUserAccount } from "@/lib/appwrite/api";
+import { useEffect } from "react";
+import {saveUser, logUser} from "@/lib/localStorage/saveUser";
+
 
 
 function SignupForm() {
@@ -29,13 +32,8 @@ function SignupForm() {
   // 2. Define a submit handler.
   async function  onSubmit(values: z.infer<typeof SignUpValidation>) {
     // create the user
-    const newUser = await createUserAccount(values)
-    if(!newUser){
-      return;
-    }else{
-      console.log(values)
-    }
-    
+    saveUser(values);
+    logUser(values)
   }
 
   return (

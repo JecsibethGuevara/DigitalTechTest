@@ -1,7 +1,12 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link} from 'react-router-dom'
 
 const Header = () => {
+  const  logout = () : void => {
+    localStorage.setItem('isLoggedIn',  JSON.stringify({isLogged : false, username: ''}))
+
+  }
+
   return (
     <section className=" flex justify-center bg-dark-2 w-full">
       
@@ -24,9 +29,9 @@ const Header = () => {
           <Link to="/">
             <img src="/assets/icons/people.svg" alt="" />
           </Link>
-          <Link to="/">
-            <img src="/assets/icons/people.svg" alt="" />
-          </Link>
+          <div onClick={logout}>
+            <img src="/assets/icons/logout.svg" alt="" />
+          </div>
         </div>
       </div>
     </section>

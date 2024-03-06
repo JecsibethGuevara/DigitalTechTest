@@ -16,7 +16,7 @@ const App = () => {
         {/* public routes */}
           <Route element={<AuthLayout/>}>
             <Route path="/sign-in" element={<SigninForm/>}/>
-            <Route path="/sign-up" element={<SignupForm/>}/>
+            <Route index element={<SignupForm/>}/>
           </Route>
           
 
@@ -24,7 +24,7 @@ const App = () => {
 
         {/* private routes */}
         <Route element={<RootLayout/>}>
-          <Route index element={<Home/>}/>
+          <Route path='/Home' element={<Home/>}/>
           <Route path='/user' element={<UserProfile/>}/>
         </Route>
         

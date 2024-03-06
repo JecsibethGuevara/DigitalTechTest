@@ -22,7 +22,7 @@ const Post = ({post}: PostProps) => {
                 <div>
                     <img src="/assets/images/profile.png" alt="" />
                 </div>
-                <div>
+                <div className='w-full'>
                     <div className="flex gap-3 mb-3">
                         <h3> {post.name} {post.surname} </h3>
                         <h5> @{post.username} </h5>
