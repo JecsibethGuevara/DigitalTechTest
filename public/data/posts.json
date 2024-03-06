@@ -1,0 +1,75 @@
+[
+    {
+        "id": 1,
+        "username": "lilililo",
+        "name": "liliana",
+        "surname": "lilo",
+        "message": "Me llamo Maria Jose, me gustan los libros, soy taciturna, vegetariana... Animalista ",
+        "likes" : 7,
+        "status" : "published"
+    },
+    {
+        "id": 2,
+        "username": "lilililo",
+        "name": "liliana",
+        "surname": "lilo",
+        "message": "Llegue de la barberia, bonito y bello, nuevecito de paquete",
+        "likes" : 7,
+        "status" : "published"
+    },
+    {
+        "id": 3,
+        "username": "lilililo",
+        "name": "liliana",
+        "surname": "lilo",
+        "message": "Excuse Me, I need your help, You need to kill me",
+        "likes" : 7,
+        "status" : "published"
+    },
+    {
+        "id": 4,
+        "username": "lilililo",
+        "name": "liliana",
+        "surname": "lilo",
+        "message": "u can't just say perchance",
+        "likes" : 7,
+        "status" : "published"
+    },
+    {
+        "id": 5,
+        "username": "Maricruz",
+        "name": "Mariana",
+        "surname": "Cruz",
+        "message": "yeah i've got thick skin and an elastic heart",
+        "likes" : 7,
+        "status" : "published"
+    },
+    {
+        "id": 6,
+        "username": "Maricruz",
+        "name": "Mariana",
+        "surname": "Cruz",
+        "message": "All that work and what did it get me?",
+        "likes" : 7,
+        "status" : "published"
+    },
+    {
+        "id": 7,
+        "username": "Maricruz",
+        "name": "Mariana",
+        "surname": "Cruz",
+        "message": "Where you go I go, what you see I see",
+        "likes" : 7,
+        "status" : "published"
+    },
+    {
+        "id": 8,
+        "username": "Maricruz",
+        "name": "Mariana",
+        "surname": "Cruz",
+        "message": "nono",
+        "likes" : 7,
+        "status" : "published"
+    }
+
+]
