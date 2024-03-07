@@ -34,24 +34,39 @@ const savePost = (values: Post) => {
     return null;
   };
   
-  // const updatePostsLikes = (values: Post[], username : string) => {
-  //   // Store the updated posts in local storage
-  //   let data = localStorage.getItem('posts')
+  const updatePostsLikes = (values: Post[], username : string) => {
+    // Store the updated posts in local storage
+    let data = localStorage.getItem('posts')
 
-  //   if(data){
-  //     let allPosts = JSON.parse(data)
-  //     let currentUser = getCurrentUser(username)
-  //     let likedPost = allPosts.map((post : Post) =>{
-  //       if(post.text === values.text  ){
-  //         if(post.likes.username !== username){
-
-  //         } ? post.likes.push(currentUser) : post.likes.
-          
-  //       }
-  //       return post
-  //     } );
-  //     console.log(likedPost)
-  //   }
-  // };
+    if(data){
+      let allPosts = JSON.parse(data)
+      let currentUser = getCurrentUser(username)
+      let likedPost = allPosts.map((post: Post) => {
+        if (post.text === values.text) {
+          post.likes.push(currentUser)
+        }
+      
+        return post;
+      });
+      console.log(likedPost)
+    }
+  };
   
-  export { savePost, getPosts };
+
+  const removeLike =  (values : Post[], username: string): void =>{
+    let data = localStorage.getItem('posts')
+
+    if(data){
+      let allPosts = JSON.parse(data)
+      let currentUser = getCurrentUser(username)
+      let likedPost = allPosts.map((post: Post) => {
+        if (post.text === values.text) {
+          post.likes =  post.likes.filter(likes => likes.username ==username);
+        }
+      
+        return post;
+      });
+      console.log(likedPost)
+    }
+  }
+  export { savePost, getPosts, updatePostsLikes, removeLike };

@@ -28,8 +28,9 @@ const PostComponent = ({post}: PostProps) => {
     async function handleLike() {
         // inform like
         like == false ? setLike(true) : setLike(false)
-        updatePostsLikes(post, username);
+        like ? removeLike(post, username) : updatePostsLikes(post, username);
 
+        
     }
 
     return (
@@ -74,3 +75,7 @@ const PostComponent = ({post}: PostProps) => {
 }
 
 export default PostComponent
+
+function removeLike(post: any, username: string) {
+    throw new Error('Function not implemented.');
+}
