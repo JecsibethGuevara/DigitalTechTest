@@ -21,7 +21,7 @@ import { setUser } from "@/lib/redux/user.js";
 function SignupForm() {
   const isLoading = false;
 
-  const dispatch = useDispatch(); // Move the dispatch inside the component
+  const dispatch = useDispatch(); 
   let isLoggedIn = useSelector((state) => state.user);
   console.log(isLoggedIn)
   // 1. Define form.

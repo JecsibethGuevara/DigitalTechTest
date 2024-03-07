@@ -9,13 +9,16 @@ import { SignUpValidation } from "@/lib/validations";
 import Loader from "@/components/shared/Loader";
 import { Link } from "react-router-dom";
 import {saveUser, logUser} from "@/lib/localStorage/saveUser";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "@/lib/redux/user.js";
 
 
 
 function SignupForm() {
   const isLoading = false;
+  const dispatch = useDispatch(); 
 
-  // 1. Define form.
+
   const form = useForm<z.infer<typeof SignUpValidation>>({
     resolver: zodResolver(SignUpValidation),
     defaultValues: {
@@ -27,11 +30,10 @@ function SignupForm() {
     },
   })
 
-  // 2. Define a submit handler.
   async function  onSubmit(values: z.infer<typeof SignUpValidation>) {
-    // create the user
     saveUser(values);
     logUser(values)
+    dispatch(setUser(values));
   }
 
   return (
@@ -80,6 +82,22 @@ function SignupForm() {
                 <FormLabel>Username</FormLabel>
                 <FormControl>
                   <Input type="text" className="shad-input" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="sex"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Gender</FormLabel>
+                <FormControl>
+                  <select className="shad-input" {...field}>
+                    <option value="f">Female</option>
+                    <option value="m">Male</option>
+                  </select>
                 </FormControl>
                 <FormMessage />
               </FormItem>
