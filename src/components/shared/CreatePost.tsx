@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Textarea } from "@/components/ui/textarea";
 import { savePost } from '@/lib/localStorage/posts';
 import { Post } from '@/types/postTypes';
+import { useDispatch, useSelector } from 'react-redux';
 
 interface CreatePostFormValues {
   text: string;
@@ -17,20 +18,9 @@ interface LoggedInUser {
 }
 
 const CreatePost = () => {
-  const [username, setUsername] = useState('');
-  useEffect(() => {
-    const checkLoginStatus = () => {
-      const logged = localStorage.getItem('isLoggedIn');
-      console.log(logged, 'yay');
-      if (logged) {
-        const parsedLogged = JSON.parse(logged) as LoggedInUser;
-        setUsername(parsedLogged.username);
-      }
-    };
-
-    checkLoginStatus();
-  }, []);
-
+  const dispatch = useDispatch
+  const [username, setUsername] = useState( useSelector((state) => state.user.username));
+  
   const form = useForm<CreatePostFormValues>({
     resolver: zodResolver(PostValidation),
     defaultValues: {

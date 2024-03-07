@@ -8,7 +8,8 @@ interface Logged {
 }
 
 function AuthLayout() {
-  const isLoggedIn = useSelector((state) => state.user);
+  let isLoggedIn = useSelector((state) => state.user);
+
   return (
     <>
       {isLoggedIn ? (

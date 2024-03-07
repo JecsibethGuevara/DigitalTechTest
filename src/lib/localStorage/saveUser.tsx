@@ -19,7 +19,7 @@ const logUser = (values: User) => {
   const isLoggedIn = localStorage.getItem('isLoggedIn')
   isLoggedIn ? JSON.parse(isLoggedIn) : false;
   if (isLoggedIn.isLogged) {
-    console.log('error in system');
+    return false
   } else {
     localStorage.setItem('isLoggedIn', JSON.stringify({ isLogged: true, username: values.username }));
   }
@@ -37,12 +37,13 @@ const loginUser = (values: User) => {
       if (user.username === values.username) {
         exists = true;
         console.log('welcome');
-        return true;
+        return user;
       }
     }
 
     if (!exists) {
       console.log('User does not exist');
+      return false
     }
   }
 };

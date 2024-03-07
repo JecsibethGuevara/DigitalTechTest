@@ -16,13 +16,14 @@ import Loader from "@/components/shared/Loader";
 import { Link } from "react-router-dom";
 import { logUser, loginUser } from "@/lib/localStorage/saveUser";
 import { useDispatch, useSelector } from "react-redux";
-import { setUser } from "@/lib/redux/reducers.js";
+import { setUser } from "@/lib/redux/user.js";
 
 function SignupForm() {
   const isLoading = false;
 
   const dispatch = useDispatch(); // Move the dispatch inside the component
-
+  let isLoggedIn = useSelector((state) => state.user);
+  console.log(isLoggedIn)
   // 1. Define form.
   const form = useForm<z.infer<typeof SignInValidation>>({
     resolver: zodResolver(SignInValidation),
@@ -38,8 +39,8 @@ function SignupForm() {
    
     if (user) {
       logUser(values);
-      dispatch(setUser(values));
-      console.log(useSelector((state) => state.user))
+      console.log(user)
+      dispatch(setUser(user));
     } else {
       console.log("error");
     }

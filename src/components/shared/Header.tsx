@@ -1,10 +1,15 @@
 import React from 'react'
 import { Link} from 'react-router-dom'
+import { clearUser } from "@/lib/redux/user.js";
+import { useDispatch } from 'react-redux';
 
 const Header = () => {
+  const dispatch = useDispatch(); // Move the dispatch inside the component
+
   const  logout = () : void => {
     localStorage.setItem('isLoggedIn',  JSON.stringify({isLogged : false, username: ''}))
-    
+    dispatch(clearUser());
+
   }
 
   return (
