@@ -48,7 +48,7 @@ const savePost = (values: Post) => {
       
         return post;
       });
-      console.log(likedPost)
+       localStorage.setItem('posts', JSON.stringify(likedPost))
     }
   };
   
@@ -62,11 +62,13 @@ const savePost = (values: Post) => {
       let likedPost = allPosts.map((post: Post) => {
         if (post.text === values.text) {
           post.likes =  post.likes.filter(likes => likes.username ==username);
+          console.log(post.likes, 'heyy')
         }
       
         return post;
       });
-      console.log(likedPost)
+      console.log(likedPost, 'heyss')
+      localStorage.setItem('posts', JSON.stringify(likedPost))
     }
   }
   export { savePost, getPosts, updatePostsLikes, removeLike };
