@@ -4,7 +4,7 @@ import { Link} from 'react-router-dom'
 const Header = () => {
   const  logout = () : void => {
     localStorage.setItem('isLoggedIn',  JSON.stringify({isLogged : false, username: ''}))
-
+    
   }
 
   return (

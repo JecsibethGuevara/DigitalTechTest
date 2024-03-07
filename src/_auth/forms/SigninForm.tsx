@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { SignInValidation } from "@/lib/validations";
 import Loader from "@/components/shared/Loader";
 import { Link } from "react-router-dom";
+import { logUser, loginUser } from "@/lib/localStorage/saveUser";
 
 
 function SignupForm() {
@@ -25,13 +26,12 @@ function SignupForm() {
   // 2. Define a submit handler.
   async function  onSubmit(values: z.infer<typeof SignInValidation>) {
     // create the user
-    const newUser = values
-    if(!newUser){
-      return;
+    let user = loginUser(values);
+    if(user){
+      logUser(values)
     }else{
-      console.log(values)
+      console.log('error')
     }
-    
   }
 
   return (

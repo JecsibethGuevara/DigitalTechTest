@@ -1,50 +1,38 @@
-import CreatePost from '@/components/shared/CreatePost'
-import Post from '@/components/shared/Post'
-import React, { useEffect, useState } from 'react'
-
-interface Post{
-  id: number; 
-  image?:string;
-  message?:string; //done
-  likes?:string[]; 
-  author?:string; 
-  createdAt?:string;
-  status?:string;
-}
+import React, { useEffect, useState } from 'react';
+import CreatePost from '@/components/shared/CreatePost';
+import PostComponent from '@/components/shared/PostComponent';
+import { getPosts } from '@/lib/localStorage/posts';
+import { Post } from '@/types/postTypes';
 
 function Home() {
+  const [posts, setPosts] = useState<Post[]>([]);
 
-  const [posts, setPosts] = useState([])
-    useEffect(() => {
-        const fetchPosts = async () => {
-            try {
-                const response = await fetch('/data/posts.json');
-                const data = await response.json();
-                setPosts(data);
-                console.log(posts)
-            } catch (error) {
-                console.log(error)
-            }
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const fetchedPosts = getPosts();
+      if (fetchedPosts) {
+        setPosts(fetchedPosts);
+      }
+    };
 
-        };
+    fetchPosts();
+  }, []);
 
-        fetchPosts();
-    }, []);
-    console.log(posts)
+console.log(posts, 'hisasda')
+
   return (
-    <div  className="w-full flex justify-center">
-      
+    <div className="w-full flex justify-center">
       <div className="w-3/4 bg-dark-2 my-2 p-3">
-      <div>
-        <CreatePost/>
-      </div>
-       
-        {posts.map((post) => <Post key={1} post={post}/>)
+        <div>
+          <CreatePost />
+        </div>
 
-        }
+        {posts.map((post, index) => (
+          <PostComponent key={index} post={post} />
+        ))}
       </div>
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;

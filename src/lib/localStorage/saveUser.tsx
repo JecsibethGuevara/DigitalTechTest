@@ -1,27 +1,61 @@
+import { User } from '@/types/userTypes';
 
-const saveUser = (values: object) =>{
 
-    //get user object
-    let storedData = localStorage.getItem('users')
-    console.log(storedData, '1')
-    if (storedData) {
-      storedData = JSON.parse(storedData)
-      storedData.push(values)
-      storedData =  JSON.stringify(storedData)
-      localStorage.setItem('users', storedData)
-    }else{
-      let data = JSON.stringify([values])
-      localStorage.setItem('users', data)
+const saveUser = (values: User) => {
+  let storedData = localStorage.getItem('users');
+
+  if (storedData) {
+    const parsedData: User[] = JSON.parse(storedData);
+    parsedData.push(values);
+    storedData = JSON.stringify(parsedData);
+    localStorage.setItem('users', storedData);
+  } else {
+    const data = JSON.stringify([values]);
+    localStorage.setItem('users', data);
+  }
+};
+
+const logUser = (values: User) => {
+  const isLoggedIn = localStorage.getItem('isLoggedIn')
+  isLoggedIn ? JSON.parse(isLoggedIn) : false;
+  if (isLoggedIn.isLogged) {
+    console.log('error in system');
+  } else {
+    localStorage.setItem('isLoggedIn', JSON.stringify({ isLogged: true, username: values.username }));
+  }
+
+  return isLoggedIn;
+};
+
+const loginUser = (values: User) => {
+  let data  = localStorage.getItem('users');
+  if (data) {
+    let users : User[] = JSON.parse(data);
+    let exists = false;
+
+    for (const user of users) {
+      if (user.username === values.username) {
+        exists = true;
+        console.log('welcome');
+        return true;
+      }
     }
-}
-const logUser = (values: object) =>{
-    let isLoggedIn =  JSON.parse(localStorage.getItem('isLoggedIn'))
-    isLoggedIn && isLoggedIn.isLogged ? 
-        console.log('error in system') 
-        : 
-        localStorage.setItem('isLoggedIn', JSON.stringify({isLogged : true, username: values.username}))
 
-    return isLoggedIn
+    if (!exists) {
+      console.log('User does not exist');
+    }
+  }
+};
+
+const getCurrentUser = (username:string)=>{
+  const data = localStorage.getItem('users')
+  if(data) {
+    let users =  JSON.parse(data)
+    const currentUser = users.filter((user : User) => user.username == username);
+    return currentUser;
+  }else{
+    return  null;
+  }
 }
 
-export {saveUser, logUser};
+export { saveUser, logUser, loginUser, getCurrentUser };
