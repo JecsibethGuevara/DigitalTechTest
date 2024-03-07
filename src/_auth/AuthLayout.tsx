@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Outlet, Navigate} from "react-router-dom"
 
 interface Logged {
@@ -7,18 +8,7 @@ interface Logged {
 }
 
 function AuthLayout() {
-  const [isLoggedIn, setLoggedIn] = useState(false);
-  useEffect(() => {
-    const checkLoginStatus = () => {
-      let logged = localStorage.getItem('isLoggedIn')
-      if (logged) {
-        logged = JSON.parse(logged)
-        setLoggedIn(logged.isLogged)
-      }
-    }
-
-
-  }, [])
+  const isLoggedIn = useSelector((state) => state.user);
   return (
     <>
       {isLoggedIn ? (

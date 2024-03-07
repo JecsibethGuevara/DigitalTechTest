@@ -9,12 +9,10 @@ import { useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { setFilter } from '@/lib/redux/reducers.js';
 
-interface SelectComponentProps {
-  onFilterChange: (newFilter: string) => void;
-}
 
 
-const Sidebar : React.FC<SelectComponentProps> = () => {
+
+const Sidebar = () => {
 
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState('');
@@ -24,7 +22,7 @@ const Sidebar : React.FC<SelectComponentProps> = () => {
     dispatch(setFilter(value))
     console.log('Selected Value:', value);
   };
-
+ 
 
 
 

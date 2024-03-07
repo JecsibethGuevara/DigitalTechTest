@@ -26,8 +26,7 @@ const PostComponent = ({post}) => {
 
     async function handleLike() {
         // inform like
-        like == false ? setLike(true) : setLike(false)
-        like ? removeLike(post, username) : updatePostsLikes(post, username);
+        updatePostsLikes(post, username);
     }
 
     console.log('sdasd')

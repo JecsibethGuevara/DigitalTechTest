@@ -4,11 +4,12 @@ import PostComponent from "@/components/shared/PostComponent";
 import { getPosts } from "@/lib/localStorage/posts";
 import { Post } from "@/types/postTypes";
 import Sidebar from "@/components/shared/Sidebar";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 function Home() {
   const [posts, setPosts] = useState<Post[]>([]);
-  let filter = useSelector((state) => state.filter);
+  const filter = useSelector((state) => state.filter);
+  console.log(filter);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -22,16 +23,30 @@ function Home() {
             );
             setPosts(showPosts);
             break;
-          default:
-            setPosts(fetchedPosts)
+          case "likes":
+            showPosts = [...fetchedPosts]
+              .slice()
+              .sort((a, b) => b.likes?.length - a.likes?.length);
+            console.log(showPosts);
+            setPosts(showPosts);
             break;
+            case "date":
+              showPosts = [...fetchedPosts]
+                .slice()
+                .sort((a, b) => a.createdAt - b.createdAt);
+              console.log(showPosts);
+              setPosts(showPosts);
+              break;
 
+          default:
+            setPosts(fetchedPosts);
+            break;
         }
       }
     };
 
     fetchPosts();
-  }, []);
+  }, [filter]); // Add filter as a dependency to trigger the effect on filter change
 
   return (
     <div className="w-full flex justify-center">
