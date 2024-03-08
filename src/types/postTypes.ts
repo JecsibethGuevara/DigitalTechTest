@@ -1,4 +1,5 @@
 export interface Post {
+    id: string;
     image?: string;
     text?: string;
     likes?: Post[];
@@ -6,3 +7,4 @@ export interface Post {
     createdAt?: string;
     status?: string;
   }
+

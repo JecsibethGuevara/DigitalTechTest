@@ -1,5 +1,4 @@
 import { Post } from "@/types/postTypes";
-import { User } from "@/types/userTypes";
 import { getCurrentUser } from "./saveUser";
 
 const savePost = (values: Post) => {
@@ -43,7 +42,7 @@ const updatePostsLikes = (values: Post[], username: string) => {
     let currentUser = getCurrentUser(username);
     let likedPost = allPosts.map((post: Post) => {
       if (post.text === values.text) {
-        post.likes.length
+        post?.likes.length
           ? post.likes.map((e) =>
               e.username == username
                 ? removeLike(values, username)

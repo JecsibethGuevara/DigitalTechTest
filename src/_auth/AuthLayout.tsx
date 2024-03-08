@@ -1,18 +1,12 @@
-import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Outlet, Navigate} from "react-router-dom"
 
-interface Logged {
-  isLogged: boolean;
-  usernames: string;
-}
-
 function AuthLayout() {
-  let isLoggedIn = useSelector((state) => state.user);
-
+  let isLoggedIn = useSelector((state: { user: any; }) => state.user);
+  console.log(isLoggedIn)
   return (
     <>
-      {isLoggedIn ? (
+      {isLoggedIn  ? (
         <Navigate to="/Home" />
       ) : (
         <>

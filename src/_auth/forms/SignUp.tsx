@@ -8,34 +8,54 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { SignUpValidation } from "@/lib/validations";
 import Loader from "@/components/shared/Loader";
 import { Link } from "react-router-dom";
-import {saveUser, logUser} from "@/lib/localStorage/saveUser";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setUser } from "@/lib/redux/user.js";
-
+import { User } from "@/types/userTypes";
+import { getDatabase, ref as dbref, set } from "firebase/database";
+import { v4 as uuidv4 } from 'uuid';
+import { getDownloadURL, getStorage, uploadBytes, ref } from "firebase/storage";
 
 
 function SignupForm() {
   const isLoading = false;
   const dispatch = useDispatch(); 
+  const uuid = uuidv4();
+  const database = getDatabase();
+  const storage = getStorage(); // Initialize Firebase Storage
 
 
   const form = useForm<z.infer<typeof SignUpValidation>>({
     resolver: zodResolver(SignUpValidation),
     defaultValues: {
+        id: "1",
       name: "",
       surname: "",
       username: "",
-      // avatar : undefined,
+      avatar : ""
       
     },
   })
 
   async function  onSubmit(values: z.infer<typeof SignUpValidation>) {
-    saveUser(values);
-    logUser(values)
+    values.id =  uuid;
+    writeUser(values)
     dispatch(setUser(values));
   }
 
+  const writeUser = async (user: User) => {
+    const avatarFile = form.getValues("avatar"); // Get the selected file from the form
+  
+    if (avatarFile) {
+      const avatarRef = ref(storage, `avatars/${uuid}`);
+      await uploadBytes(avatarRef, avatarFile); // Upload the file to Firebase Storage
+  
+      const downloadURL = await getDownloadURL(avatarRef); // Get the download URL of the uploaded file
+  
+      user.avatar = downloadURL; // Assign the download URL to the user's avatar property
+    }
+  
+    set(dbref(database, "users/" + uuid), user); // Save the user data (including the avatar URL) to the Realtim
+  }
   return (
 
     <Form {...form}>
@@ -103,7 +123,7 @@ function SignupForm() {
               </FormItem>
             )}
           />
-          {/* <FormField
+          <FormField
             control={form.control}
             name="avatar"
             render={({ field }) => (
@@ -115,7 +135,7 @@ function SignupForm() {
                 <FormMessage />
               </FormItem>
             )}
-          /> */}
+          />
           <Button type="submit" className="shad-button_primary">
             {isLoading ? (
               <div className="flex-center gap-2" >

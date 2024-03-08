@@ -1,45 +1,62 @@
 import { useEffect, useState } from "react";
 import CreatePost from "@/components/shared/CreatePost";
 import PostComponent from "@/components/shared/PostComponent";
-import { getPosts } from "@/lib/localStorage/posts";
 import { Post } from "@/types/postTypes";
 import Sidebar from "@/components/shared/Sidebar";
 import { useSelector } from "react-redux";
+import { getDatabase, ref, child, get } from "firebase/database";
+import { getStorage, refa, getDownloadURL } from "firebase/storage";
+
 
 function Home() {
   const [posts, setPosts] = useState<Post[]>([]);
   const filter = useSelector((state) => state.filter);
-  console.log(filter);
+  const dbRef = ref(getDatabase());
+  
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const fetchedPosts = getPosts();
-      if (fetchedPosts) {
+      get(child(dbRef, `posts`)).then((snapshot: { exists: () => any; val: () => any; }) => {
+        if (snapshot.exists()) {
+          let data = snapshot.val();
+          const dataArray = Object.entries(data).map(([key, value]) => ({ id: key, ...value }));
+          setPosts(dataArray);
+        } else {
+          console.log("No data available");
+        }
+      }).catch((error) => {
+        console.error(error);
+      });
+    
+      if (posts) {
         let showPosts;
+
+
         switch (filter) {
-          case "user":
-            showPosts = [...fetchedPosts].sort((a, b) =>
+          case "user": 
+            showPosts = [...posts].sort((a, b) =>
               a.author.localeCompare(b.author)
             );
+            console.log(showPosts);
             setPosts(showPosts);
             break;
           case "likes":
-            showPosts = [...fetchedPosts]
+            showPosts = [...posts]
               .slice()
               .sort((a, b) => b.likes?.length - a.likes?.length);
             console.log(showPosts);
             setPosts(showPosts);
             break;
-            case "date":
-              showPosts = [...fetchedPosts]
-                .slice()
-                .sort((a, b) => a.createdAt - b.createdAt);
-              console.log(showPosts);
-              setPosts(showPosts);
-              break;
+          case "date":
+            showPosts = [...posts]
+              .slice()
+              .sort((a, b) => a.createdAt - b.createdAt);
+            console.log(showPosts);
+            setPosts(showPosts);
+            break;
 
           default:
-            setPosts(fetchedPosts);
+            setPosts(posts);
             break;
         }
       }

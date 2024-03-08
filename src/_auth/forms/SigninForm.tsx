@@ -14,11 +14,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SignInValidation } from "@/lib/validations";
 import Loader from "@/components/shared/Loader";
 import { Link } from "react-router-dom";
-import { logUser, loginUser } from "@/lib/localStorage/saveUser";
+import { logUser, loginUser, loginUsername } from "@/lib/localStorage/saveUser";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "@/lib/redux/user.js";
 
 function SignupForm() {
+
   const isLoading = false;
 
   const dispatch = useDispatch(); 
@@ -33,13 +34,11 @@ function SignupForm() {
   });
 
   // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof SignInValidation>) {
-    // create the user
-    let user = loginUser(values);
-   
-    if (user) {
-      logUser(values);
-      console.log(user)
+  const onSubmit = async (values: z.infer<typeof SignInValidation>)=> {
+    // create the us
+
+   const user = await loginUsername(values.username)
+    if (user.username) {
       dispatch(setUser(user));
     } else {
       console.log("error");

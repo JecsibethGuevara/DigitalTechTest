@@ -1,35 +1,34 @@
-import React, { useEffect, useState } from 'react'
-import { Button } from '../ui/button'
-import { getCurrentUser } from '@/lib/localStorage/saveUser';
-import { removeLike, updatePostsLikes } from '@/lib/localStorage/posts';
-import { Post } from '@/types/postTypes';
+import { useState } from 'react'
+import { updatePostsLikes } from '@/lib/localStorage/posts';
+import { useSelector } from 'react-redux';
+import { getDatabase, ref, child, push, update } from "firebase/database";
 
 
-const PostComponent = ({post}) => {
+const PostComponent = ({ post }: any) => {
     post = JSON.parse(post)
     const [like, setLike] = useState(false)
-    const [username, setUsername] = useState('');
+    const [username, setUsername] = useState(useSelector((state: { user: { username: any; }; }) => state.user));
 
-  useEffect(() => {
-    const checkLoginStatus = () => {
-      const logged = localStorage.getItem('isLoggedIn');
-      if (logged) {
-        const parsedLogged = JSON.parse(logged);
-        setUsername(parsedLogged.username);
+    const handleLike = async (e: any) => {
+        const db = getDatabase();
+        const likesArray = post.likes || []; // Get the existing likes array or create a new array if it doesn't exist
+      
+        const usernameIndex = likesArray.findIndex((like: any) => like.username === username.username);
+      
+        if (usernameIndex !== -1) {
+          // If the current username is found in the likes array, remove it
+          likesArray.splice(usernameIndex, 1);
+        } else {
+          // If the current username is not found in the likes array, add it
+          likesArray.push(username);
+        }
+      
+        const updates = {};
+        updates['/posts/' + post.id + '/likes'] = likesArray; // Update the likes array in the post
+        console.log(post);
+        return update(ref(db), updates);
+      };
 
-      }
-    };
-
-    checkLoginStatus();
-  }, []);
-
-
-    async function handleLike() {
-        // inform like
-        updatePostsLikes(post, username);
-    }
-
-    console.log('sdasd')
     return (
         <div className="w-full bg-dark-3 p-5 border-b-1-slate mb-2">
             <div className="flex gap-5">
@@ -48,13 +47,14 @@ const PostComponent = ({post}) => {
                     <div className='mb-4'>
                         <p> {post.text}
                         </p>
+                        <img src={post?.image} />
                     </div>
                     <div className='flex items-center flex-between justify-center px-16' >
                         <button type='button'>
                             <img src="/assets/icons/chat.svg" alt="" />
                         </button>
                         <button className='flex justify-center items-center gap-2' type='button' onClick={handleLike}>
-                            <p>{post.likes.length}</p>
+                            <p>{post.likes?.length}</p>
                             <img src={like ? "/assets/icons/liked.svg" : "/assets/icons/like.svg"} alt="" />
                         </button>
                         <button type='button'>

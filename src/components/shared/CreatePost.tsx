@@ -1,46 +1,47 @@
-import  { useEffect, useState } from 'react';
+import { initializeApp } from 'firebase/app';
+
+import  { useState } from 'react';
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Button } from '../ui/button';
 import { PostValidation } from '@/lib/validations';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Textarea } from "@/components/ui/textarea";
-import { savePost } from '@/lib/localStorage/posts';
 import { Post } from '@/types/postTypes';
-import { useDispatch, useSelector } from 'react-redux';
+import {  useSelector } from 'react-redux';
+import { Input } from "@/components/ui/input";
+import { getDatabase, ref, set } from "firebase/database";
+import { v4 as uuidv4 } from 'uuid';
 
-interface CreatePostFormValues {
-  text: string;
-}
 
-interface LoggedInUser {
-  username: string;
-}
 
 const CreatePost = () => {
-  const dispatch = useDispatch
-  const [username, setUsername] = useState( useSelector((state) => state.user.username));
-  
-  const form = useForm<CreatePostFormValues>({
+  const uuid = uuidv4();
+  const [username, setUsername] = useState( useSelector((state: { user: any; }) => state.user.username));
+  const database = getDatabase();
+
+  const form = useForm<Post>({
     resolver: zodResolver(PostValidation),
     defaultValues: {
       text: "",
+      image: ""
     },
   });
-
-  // Define a submit handler.
-  const onSubmit = async (values: CreatePostFormValues) => {
-    // create the user
+  const writePost = (post :Post) =>{
+    set(ref(database, 'posts/' + uuid ),{
+      ...post
+    })
+  }
+  const onSubmit = async (values: Post) => {
     const newPost: Post = {
-      image: '',
+      image: values.image,
       text: values.text,
       likes: [],
       author: username,
       createdAt: new Date().toISOString(),
       status: 'published',
     };
-
-    savePost(newPost);
+    writePost(newPost);
   };
 
   return (
@@ -64,6 +65,18 @@ const CreatePost = () => {
                     <FormItem>
                       <FormControl>
                         <Textarea autoFocus placeholder='Say Something' className="bg-dark-3 border-none" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="image"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input type='file' className="bg-dark-3 border-none" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

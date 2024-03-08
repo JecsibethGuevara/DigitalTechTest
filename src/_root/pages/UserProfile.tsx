@@ -1,31 +1,28 @@
-import { getPosts } from '@/lib/localStorage/posts';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import PostComponent from '@/components/shared/PostComponent';
 import { Post } from '@/types/postTypes';
+import { child, get, getDatabase, ref } from 'firebase/database';
 
 const UserProfile = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [username, setUsername] = useState('');
-
-  useEffect(() => {
-    const checkLoginStatus = () => {
-      const logged = localStorage.getItem('isLoggedIn');
-      if (logged) {
-        const parsedLogged = JSON.parse(logged);
-        setUsername(parsedLogged.username);
-
-      }
-    };
-
-    checkLoginStatus();
-  }, []);
-
+  const dbRef = ref(getDatabase());
   useEffect(() => {
     const fetchPosts = async () => {
-      const allPosts = getPosts();
-      console.log(allPosts, 'all', username);
-      if(allPosts){
-        const userPosts = allPosts.filter((post) => post.author == username);
+        get(child(dbRef, `posts`)).then((snapshot: { exists: () => any; val: () => any; }) => {
+          if (snapshot.exists()) {
+            let data = snapshot.val();
+            const dataArray = Object.entries(data).map(([key, value]) => ({ id: key, ...value }));
+            setPosts(dataArray);
+          } else {
+            console.log("No data available");
+          }
+        }).catch((error) => {
+          console.error(error);
+        });
+      
+      if(posts){
+        const userPosts = posts.filter((post) => post.author == username);
         console.log(userPosts, 'user')
         setPosts(userPosts);
       }
@@ -50,7 +47,7 @@ const UserProfile = () => {
         </div>
         <h1>Posts</h1>
         {posts.map((post, index) => (
-          <PostComponent key={index} post={post} />
+          <PostComponent key={index} post={JSON.stringify(post)} />
         ))}
       </div>
     </div>
