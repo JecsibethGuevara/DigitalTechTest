@@ -12,6 +12,7 @@ import {  useSelector } from 'react-redux';
 import { Input } from "@/components/ui/input";
 import { getDatabase, ref, set } from "firebase/database";
 import { v4 as uuidv4 } from 'uuid';
+import { Link } from 'react-router-dom';
 
 
 
@@ -34,6 +35,7 @@ const CreatePost = () => {
   }
   const onSubmit = async (values: Post) => {
     const newPost: Post = {
+      id: '',
       image: values.image,
       text: values.text,
       likes: [],
@@ -52,7 +54,11 @@ const CreatePost = () => {
         </div>
         <div>
           <div className="flex gap-3 mb-3">
-            <h3> Name Surname </h3>
+          <Link to="/user">
+          <h3> Hi! {username}</h3>
+              </Link>
+              
+            
           </div>
 
           <Form {...form}>
