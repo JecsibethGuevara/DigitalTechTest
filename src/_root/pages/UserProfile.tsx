@@ -8,7 +8,7 @@ import LikesData from '@/components/shared/LikesData';
 
 const UserProfile = () => {
   const [posts, setPosts] = useState<Post[]>([]);
-  const [username, setUsername] = useState(useSelector((state: { user: any; }) => state.user));
+  const [username] = useState(useSelector((state: { user: any; }) => state.user));
   const dbRef = ref(getDatabase());
   const [likesData, setLikesData] = useState({ totalLikes: 10, womenLikes: 5, menLikes: 5 })
   useEffect(() => {
@@ -16,7 +16,7 @@ const UserProfile = () => {
       get(child(dbRef, `posts`)).then((snapshot: { exists: () => any; val: () => any; }) => {
         if (snapshot.exists()) {
           let data = snapshot.val();
-          const dataArray = Object.entries(data).map(([key, value]) => ({ id: key, ...value }));
+          const dataArray = Object.entries(data).map(([key, value]) => ({ id: key, ...(value as any) }));          setPosts(dataArray);
 
           if (dataArray) {
             const userPosts = dataArray.filter((post) => post.author == username.username);
@@ -24,11 +24,11 @@ const UserProfile = () => {
             let womenLikes = 0;
             let menLikes = 0;
 
-            let data = dataArray.map((item) => {
+            dataArray.map((item) => {
               if(item.likes){
                 totalLikes = totalLikes +  item.likes?.length;
-                womenLikes += item.likes?.filter((like) => like.sex === "f").length;
-                menLikes += item.likes?.filter((like) => like.sex === "m").length;
+                womenLikes += item.likes?.filter((like: { sex: string; }) => like.sex === "f").length;
+                menLikes += item.likes?.filter((like: { sex: string; }) => like.sex === "m").length;
               }
               
             });

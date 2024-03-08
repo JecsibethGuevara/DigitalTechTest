@@ -14,17 +14,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SignInValidation } from "@/lib/validations";
 import Loader from "@/components/shared/Loader";
 import { Link } from "react-router-dom";
-import { logUser, loginUser, loginUsername } from "@/lib/localStorage/saveUser";
+import { loginUsername } from "@/lib/localStorage/saveUser";
 import { useDispatch, useSelector } from "react-redux";
-import { setUser } from "@/lib/redux/user.js";
+import { setUser } from "@/lib/redux/user";
 
 function SignupForm() {
 
   const isLoading = false;
 
   const dispatch = useDispatch(); 
-  let isLoggedIn = useSelector((state) => state.user);
-  console.log(isLoggedIn)
+  let isLoggedIn = useSelector((state : {user : any}) => state.user);
+  console.log(isLoggedIn, 'logedIn')
   // 1. Define form.
   const form = useForm<z.infer<typeof SignInValidation>>({
     resolver: zodResolver(SignInValidation),

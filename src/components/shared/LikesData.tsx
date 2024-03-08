@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
-import { Chart, CategoryScale,LinearScale, BarController, BarElement } from 'chart.js';
+import { Chart, CategoryScale, LinearScale, BarController, BarElement } from 'chart.js';
 
-interface LikesData {
-  totalLikes: number;
-  womenLikes: number;
-  menLikes: number;
-}
-
-const LikesChart: React.FC = (likesData : LikesData) => {
-  const [chartData, setChartData] = useState<Chart.ChartData | undefined>(undefined);
+const LikesChart: React.FC<any> = (likesData) => {
+  const [chartData, setChartData] = useState<any>(null);
 
   useEffect(() => {
     // Fetch data and update chart
@@ -18,7 +12,7 @@ const LikesChart: React.FC = (likesData : LikesData) => {
 
   const fetchData = () => {
     // Simulated data for likes
-    likesData = likesData.data
+    likesData = likesData.data;
     // Register category scale
     Chart.register(CategoryScale, BarController, BarElement);
     Chart.register(LinearScale, BarController, BarElement);

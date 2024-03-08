@@ -1,5 +1,4 @@
 import * as z from "zod";
-
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form";
 import { Input } from "@/components/ui/input"
@@ -9,7 +8,7 @@ import { SignUpValidation } from "@/lib/validations";
 import Loader from "@/components/shared/Loader";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setUser } from "@/lib/redux/user.js";
+import { setUser } from "@/lib/redux/user";
 import { User } from "@/types/userTypes";
 import { getDatabase, ref as dbref, set } from "firebase/database";
 import { v4 as uuidv4 } from 'uuid';
@@ -47,7 +46,7 @@ function SignupForm() {
   
     if (avatarFile) {
       const avatarRef = ref(storage, `avatars/${uuid}`);
-      await uploadBytes(avatarRef, avatarFile); // Upload the file to Firebase Storage
+       // Upload the file to Firebase Storage
   
       const downloadURL = await getDownloadURL(avatarRef); // Get the download URL of the uploaded file
   

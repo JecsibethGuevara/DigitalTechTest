@@ -1,4 +1,3 @@
-import { initializeApp } from 'firebase/app';
 
 import  { useState } from 'react';
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
@@ -48,14 +47,14 @@ const CreatePost = () => {
 
   return (
     <div className="w-full bg-dark-3 p-5 border-b-1-slate mb-2">
-      <div className="flex gap-5">
-        <div>
-          <img src="/assets/images/profile.png" alt="" />
+      <div className="flex  gap-5">
+        <div className="w-1/4">
+          <img className="w-3/4" src="/assets/images/profile.png" alt="" />
         </div>
         <div>
           <div className="flex gap-3 mb-3">
           <Link to="/user">
-          <h3> Hi! {username}</h3>
+          <h3 className=" font-bold text-2xl"> Hi! {username}</h3>
               </Link>
               
             
@@ -76,23 +75,10 @@ const CreatePost = () => {
                     </FormItem>
                   )}
                 />
-                <FormField
-                  control={form.control}
-                  name="image"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input type='file' className="bg-dark-3 border-none" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                
 
-                <div className='flex items-center flex-between justify-center px-16' >
-                  <button type='button'>
-                    <img src="/assets/icons/gallery-add.svg" alt="" />
-                  </button>
+                <div className='flex items-left flex-between justify-center px-16' >
+                  
                   <Button type="submit" className="shad-button_primary">
                     Post
                   </Button>

@@ -6,8 +6,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useState } from "react";
-import { useDispatch, useSelector } from 'react-redux';
-import { setFilter } from '@/lib/redux/reducers.js';
+import { useDispatch } from 'react-redux';
+import { setFilter } from '@/lib/redux/reducers';
 
 
 

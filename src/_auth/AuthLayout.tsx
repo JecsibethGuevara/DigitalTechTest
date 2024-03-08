@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { Outlet, Navigate} from "react-router-dom"
 
 function AuthLayout() {
-  let isLoggedIn = useSelector((state: { user: any; }) => state.user);
+  let isLoggedIn = useSelector((state: { user: any; }) => state.user.username);
   console.log(isLoggedIn)
   return (
     <>

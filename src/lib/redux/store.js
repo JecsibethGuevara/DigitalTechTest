@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
-import {filterReducer} from '@/lib/redux/reducers.js';
-import {userReducer} from '@/lib/redux/user.js';
+import {filterReducer} from '@/lib/redux/reducers';
+import {userReducer} from '@/lib/redux/user';
 import {loadState, saveState} from "@/lib/localStorage/saveUser";
 
 const persistedState = loadState();

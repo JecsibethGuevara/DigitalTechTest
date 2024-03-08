@@ -4,13 +4,12 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux'; // Importing useSelector from react-redux
 
 function RootLayout() {
-  // Assuming your Redux store has a 'user' slice
-  let isLoggedIn = useSelector((state: { user: any; }) => state.user);
-  console.log(isLoggedIn)
+  let isLoggedIn = useSelector((state: { user: any; }) => state.user.username);
+  console.log(isLoggedIn, 'loged')
 
   return (
     <>
-      {isLoggedIn.username ? (
+      {isLoggedIn ? (
         <div className="w-full">
           <Header />
           <section>
